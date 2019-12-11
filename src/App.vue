@@ -16,8 +16,8 @@
 
     <b-modal reg="modal" id="modal-1" title="add ip" hide-footer>
       <p class="my-4">
-        <input class="form-control" v-model="ip" placeholder="0.0.0.0" />
-
+        <!-- <input class="form-control" v-model="ip" placeholder="0.0.0.0" /> -->
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="ip" placeholder="0.0.0.0"></textarea>
         <b-button class="mt-3" block @click="add(ip)">Add</b-button>
       </p>
     </b-modal>
@@ -54,11 +54,15 @@ export default {
         .finally(() => (this.loading = false));
     },
     add: function(ip) {
-      axios
-        .post("http://localhost:8081/api/domain@add?ip=" + ip)
-        .then()
-        .catch()
-        .finally(this.get, this.$bvModal.hide("modal-1"), (this.ip = null));
+
+      let arr = ip.split(';');
+      for (let index = 0; index < arr.length; index++) {
+          axios
+          .post("http://localhost:8081/api/domain@add?ip=" + arr[index])
+          .then()
+          .catch()
+          .finally(this.get, this.$bvModal.hide("modal-1"), (this.ip = null));
+      }
     }
   }
 };
